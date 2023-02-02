@@ -41,37 +41,51 @@ def compute(infile, outfile):
     # r,c = edges.shape
     # G.add_edges_from([tuple([np.where(edges[i,j]==varnames)[0][0] for j in range(c)]) for i in range(r)])
 
-    # Directed graph search
+    # K2 search
     ordering = range(n)
     G = K2_search(vars, D, ordering)
-
-    # Compute Bayesian score
     bs = bayesian_score(vars, G, D)
-    print(bs)
+    print(f"K2 search: {bs}")
+
+
+    # Oppurtunistic local search
+    Ginitial = nx.DiGraph()
+    Ginitial.add_nodes_from(range(n))
+    G = local_search(vars, D, Ginitial, 500)
+    bs = bayesian_score(vars, G, D)
+    print(f"Opportunistic local search: {bs}")
 
     # Plot G
-    labels = dict(zip(range(n),varnames))
-    pos = nx.planar_layout(G)
-    nx.draw_networkx(G, pos=pos, labels=labels, node_color='lightgray', arrowsize=20)
-    plt.show()
+    # labels = dict(zip(range(n),varnames))
+    # pos = nx.planar_layout(G)
+    # nx.draw_networkx(G, pos=pos, labels=labels, node_color='lightgray', arrowsize=20)
+    # plt.show()
 
 
-# def rand_graph_neighbor(G):
-#     n = G.number_of_nodes()
-#     i = random.randint(0,n)
-#     j = (i + random.randint(1,n)) % n
-#     Gprime = G.copy()
-#     if G.has_edge(i,j):
-#         Gprime.remove_edge(i,j)
-#     else:
-#         Gprime.add_edge(i,j)
-#     return Gprime
+def rand_graph_neighbor(G):
+    n = G.number_of_nodes()
+    i = random.randint(0,n)
+    j = (i + random.randint(1,n)) % n
+    Gprime = G.copy()
+    if G.has_edge(i,j):
+        Gprime.remove_edge(i,j)
+    else:
+        Gprime.add_edge(i,j)
+    return Gprime
 
 
-# def local_search(vars, D, G, k_max):
-#     y = bayesian_score(vars, G, D)
-#     for k in range(k_max):
-#         Gprime = rand_graph_neighbor(G)
+def local_search(vars, D, G, k_max):
+    y = bayesian_score(vars, G, D)
+    for k in tqdm(range(k_max)):
+        Gprime = rand_graph_neighbor(G)
+        yprime = -np.inf
+        try:
+            nx.find_cycle(G)
+        except:
+            yprime = bayesian_score(vars, Gprime, D)
+        if yprime > y:
+            y, G = yprime, Gprime
+    return G
     
 
 def K2_search(vars, D, ordering):
