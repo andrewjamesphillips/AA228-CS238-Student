@@ -1,0 +1,8 @@
+"age","passengerclass"
+"numparentschildren","passengerclass"
+"passengerclass","survived"
+"passengerclass","portembarked"
+"sex","survived"
+"numsiblings","age"
+"numsiblings","numparentschildren"
+"survived","portembarked"

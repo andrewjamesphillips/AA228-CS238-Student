@@ -1,0 +1,1 @@
+Execution time was 6366.687746047974 seconds for a score of -404302.78964386426
