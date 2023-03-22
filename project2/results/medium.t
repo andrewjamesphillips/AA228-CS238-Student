@@ -1,0 +1,1 @@
+Execution time was 0.7250058650970459 seconds for medium.csv with nstates=50000, nactions=7, gamma=1.0, alpha=0.2

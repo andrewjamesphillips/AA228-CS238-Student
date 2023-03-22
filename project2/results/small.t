@@ -1,0 +1,1 @@
+Execution time was 0.2978818416595459 seconds for small.csv with nstates=100, nactions=4, gamma=0.95, alpha=0.2
