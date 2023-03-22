@@ -4,9 +4,6 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import time
 
-# SMALL 100 4 0.95 0.1
-# MEDIUM 50000 7 1 0.1
-# LARGE 312020 9 0.95 0.1
 
 IN_DIR = "data"
 OUT_DIR = "results"
